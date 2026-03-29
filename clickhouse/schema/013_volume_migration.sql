@@ -49,8 +49,8 @@
 
 ALTER TABLE price_data.prices ADD COLUMN IF NOT EXISTS native_volume_buy Decimal128(0) DEFAULT 0;
 ALTER TABLE price_data.prices ADD COLUMN IF NOT EXISTS native_volume_sell Decimal128(0) DEFAULT 0;
-ALTER TABLE price_data.prices ADD COLUMN IF NOT EXISTS usdt_volume_buy Decimal128(12) DEFAULT 0;
-ALTER TABLE price_data.prices ADD COLUMN IF NOT EXISTS usdt_volume_sell Decimal128(12) DEFAULT 0;
+ALTER TABLE price_data.prices ADD COLUMN IF NOT EXISTS usd_volume_buy Decimal128(12) DEFAULT 0;
+ALTER TABLE price_data.prices ADD COLUMN IF NOT EXISTS usd_volume_sell Decimal128(12) DEFAULT 0;
 
 -- ============================================================================
 -- SECTION 2: Migrate OHLC Materialized Views to OHLCV
@@ -88,12 +88,12 @@ TO price_data.ohlc_5min
 AS SELECT
     p.asset_id,
     toStartOfFiveMinute(b.block_timestamp) AS interval_start,
-    argMinState(p.usdt_price, b.block_timestamp) AS open_state,
-    maxState(p.usdt_price) AS high_state,
-    minState(p.usdt_price) AS low_state,
-    argMaxState(p.usdt_price, b.block_timestamp) AS close_state,
-    sumState(p.usdt_volume_buy) AS volume_buy_state,
-    sumState(p.usdt_volume_sell) AS volume_sell_state
+    argMinState(p.usd_price, b.block_timestamp) AS open_state,
+    maxState(p.usd_price) AS high_state,
+    minState(p.usd_price) AS low_state,
+    argMaxState(p.usd_price, b.block_timestamp) AS close_state,
+    sumState(p.usd_volume_buy) AS volume_buy_state,
+    sumState(p.usd_volume_sell) AS volume_sell_state
 FROM price_data.prices p
 INNER JOIN price_data.blocks b ON p.block_height = b.block_height
 GROUP BY p.asset_id, interval_start;
@@ -115,12 +115,12 @@ TO price_data.ohlc_15min
 AS SELECT
     p.asset_id,
     toStartOfInterval(b.block_timestamp, INTERVAL 15 MINUTE) AS interval_start,
-    argMinState(p.usdt_price, b.block_timestamp) AS open_state,
-    maxState(p.usdt_price) AS high_state,
-    minState(p.usdt_price) AS low_state,
-    argMaxState(p.usdt_price, b.block_timestamp) AS close_state,
-    sumState(p.usdt_volume_buy) AS volume_buy_state,
-    sumState(p.usdt_volume_sell) AS volume_sell_state
+    argMinState(p.usd_price, b.block_timestamp) AS open_state,
+    maxState(p.usd_price) AS high_state,
+    minState(p.usd_price) AS low_state,
+    argMaxState(p.usd_price, b.block_timestamp) AS close_state,
+    sumState(p.usd_volume_buy) AS volume_buy_state,
+    sumState(p.usd_volume_sell) AS volume_sell_state
 FROM price_data.prices p
 INNER JOIN price_data.blocks b ON p.block_height = b.block_height
 GROUP BY p.asset_id, interval_start;
@@ -142,12 +142,12 @@ TO price_data.ohlc_1h
 AS SELECT
     p.asset_id,
     toStartOfHour(b.block_timestamp) AS interval_start,
-    argMinState(p.usdt_price, b.block_timestamp) AS open_state,
-    maxState(p.usdt_price) AS high_state,
-    minState(p.usdt_price) AS low_state,
-    argMaxState(p.usdt_price, b.block_timestamp) AS close_state,
-    sumState(p.usdt_volume_buy) AS volume_buy_state,
-    sumState(p.usdt_volume_sell) AS volume_sell_state
+    argMinState(p.usd_price, b.block_timestamp) AS open_state,
+    maxState(p.usd_price) AS high_state,
+    minState(p.usd_price) AS low_state,
+    argMaxState(p.usd_price, b.block_timestamp) AS close_state,
+    sumState(p.usd_volume_buy) AS volume_buy_state,
+    sumState(p.usd_volume_sell) AS volume_sell_state
 FROM price_data.prices p
 INNER JOIN price_data.blocks b ON p.block_height = b.block_height
 GROUP BY p.asset_id, interval_start;
@@ -169,12 +169,12 @@ TO price_data.ohlc_4h
 AS SELECT
     p.asset_id,
     toStartOfInterval(b.block_timestamp, INTERVAL 4 HOUR) AS interval_start,
-    argMinState(p.usdt_price, b.block_timestamp) AS open_state,
-    maxState(p.usdt_price) AS high_state,
-    minState(p.usdt_price) AS low_state,
-    argMaxState(p.usdt_price, b.block_timestamp) AS close_state,
-    sumState(p.usdt_volume_buy) AS volume_buy_state,
-    sumState(p.usdt_volume_sell) AS volume_sell_state
+    argMinState(p.usd_price, b.block_timestamp) AS open_state,
+    maxState(p.usd_price) AS high_state,
+    minState(p.usd_price) AS low_state,
+    argMaxState(p.usd_price, b.block_timestamp) AS close_state,
+    sumState(p.usd_volume_buy) AS volume_buy_state,
+    sumState(p.usd_volume_sell) AS volume_sell_state
 FROM price_data.prices p
 INNER JOIN price_data.blocks b ON p.block_height = b.block_height
 GROUP BY p.asset_id, interval_start;
@@ -196,12 +196,12 @@ TO price_data.ohlc_1d
 AS SELECT
     p.asset_id,
     toStartOfDay(b.block_timestamp) AS interval_start,
-    argMinState(p.usdt_price, b.block_timestamp) AS open_state,
-    maxState(p.usdt_price) AS high_state,
-    minState(p.usdt_price) AS low_state,
-    argMaxState(p.usdt_price, b.block_timestamp) AS close_state,
-    sumState(p.usdt_volume_buy) AS volume_buy_state,
-    sumState(p.usdt_volume_sell) AS volume_sell_state
+    argMinState(p.usd_price, b.block_timestamp) AS open_state,
+    maxState(p.usd_price) AS high_state,
+    minState(p.usd_price) AS low_state,
+    argMaxState(p.usd_price, b.block_timestamp) AS close_state,
+    sumState(p.usd_volume_buy) AS volume_buy_state,
+    sumState(p.usd_volume_sell) AS volume_sell_state
 FROM price_data.prices p
 INNER JOIN price_data.blocks b ON p.block_height = b.block_height
 GROUP BY p.asset_id, interval_start;
@@ -359,16 +359,16 @@ ORDER BY interval_start ASC;
 --
 -- 3. BIDIRECTIONAL VOLUME TRACKING:
 --    Each swap generates volume for TWO assets:
---    - asset_in gets native_volume_sell (selling this asset) + usdt_volume_sell
---    - asset_out gets native_volume_buy (buying this asset) + usdt_volume_buy
+--    - asset_in gets native_volume_sell (selling this asset) + usd_volume_sell
+--    - asset_out gets native_volume_buy (buying this asset) + usd_volume_buy
 --
 --    This is additive with price data. The same (asset_id, block_height) row holds both:
---    - usdt_price (from price calculation logic, existing)
+--    - usd_price (from price calculation logic, existing)
 --    - volume fields (from swap event processing, new in Phase 12)
 --
 --    Example: In a HDX→USDT swap at block 1000:
---    - HDX (asset 0) row: price=0.015, volume_sell=1000 HDX, usdt_volume_sell=15 USDT
---    - USDT (asset 5) row: price=1.0, volume_buy=15 USDT, usdt_volume_buy=15 USDT
+--    - HDX (asset 0) row: price=0.015, volume_sell=1000 HDX, usd_volume_sell=15 USD
+--    - USDT (asset 5) row: price=1.0, volume_buy=15 USDT, usd_volume_buy=15 USD
 --
 --    Both assets get ONE row per block. No duplicate rows needed.
 --
